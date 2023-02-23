@@ -1,5 +1,3 @@
-//PROYECTO:
-
 let empleados = document.getElementById("empleados")
 let guardarEmpleadoBtn = document.getElementById("guardarEmpleadoBtn")
 let verCatalogoBtn = document.getElementById("verCatalogoBtn")
@@ -7,44 +5,14 @@ let ocultarCatalogoBtn = document.getElementById("ocultarCatalogoBtn")
 let buscador = document.getElementById("buscador")
 let coincidencia = document.getElementById("coincidencia")
 let selectOrden = document.getElementById("selectOrden")
+let formEmpleado = document.getElementById("formEmpleado")
+let cargandoTexto = document.getElementById("cargandoTexto")
+let cargandoRuedita = document.getElementById("cargandoRuedita")
 
-//class constructora
-class Empleado {
-    constructor(legajo, nombre, puesto, sueldo, imagen) {
-        this.legajo = legajo;
-        this.nombre = nombre;
-        this.puesto = puesto;
-        this.sueldo = sueldo;
-        this.imagen = imagen;
-    }
-//métodos
-mostrarInfoEmpleado() {
-        console.log(`El empleado es ${this.nombre}, su puesto de empleo es ${this.puesto} y su sueldo es ${this.sueldo}`)
-    }
-}
 
-const empleado29395 = new Empleado(29395, "Alexis Villalba", "Operario calificado", 100000, "Empleado.jpg")
 
-const empleado32215 = new Empleado(32215, "Juan Gomez", "Ingresante", 93000, "Empleado.jpg")
+//FUNCTIONS:
 
-const empleado20018 = new Empleado(20018, "Carlos Abrate", "Oficial Múltiple superior", 150000, "Empleado.jpg")
-
-const empleado25849 = new Empleado(25849, "Ignacio Quinteros", "Empleado administrativo de 2°", 120000, "Empleado.jpg")
-
-const empleado21540 = new Empleado(21540, "Ramon Perez", "Oficial", 130000, "Empleado.jpg")
-
-//array de objetos:
-let empresa = []
-if (localStorage.getItem("empresa")) {
-empresa = JSON.parse(localStorage.getItem("empresa"))
-} else {
-//entra por primera vez
-console.log("Seteando catalogo de empresa")
-empresa.push(empleado29395, empleado32215, empleado20018, empleado25849, empleado21540)
-localStorage.setItem("empresas", JSON.stringify(empresa))
-}
-
-//FUNCTIONS PROYECTO:
 function mostrarCatalogo(array) {
     empleados.innerHTML = ""
     for (let empleado of array) {
@@ -61,33 +29,57 @@ function mostrarCatalogo(array) {
                 </div>
         </div>`
         empleados.appendChild(nuevoEmpleado)
-
-        let btnAgregar = document.getElementById(`guardarEmpleadoBtn`)
-        console.log(btnAgregar)
-        btnAgregar.addEventListener("click", () => {
-            console.log(empleado)
-            console.log(`${empleado.nombre} fue agregado como nuevo empleado con el N°${empleado.legajo} de legajo con el puesto de ${empleado.puesto}. Su sueldo es ${empleado.sueldo}`)
-        })
     }
 }
 
-function cargarEmpleado(array) {
+
+
+function cargarEmpleado(empleado) {
+    
     let inputLegajo = document.getElementById("legajoInput")
     let inputNombre = document.getElementById("nombreInput")
     let inputPuesto = document.getElementById("puestoInput")
     let inputSueldo = document.getElementById("sueldoInput")
 
     const empleadoNuevo = new Empleado(inputLegajo.value, inputNombre.value, inputPuesto.value, inputSueldo.value, "Empleado.jpg")
-    console.log(empleadoNuevo)
-    array.push(empleadoNuevo)
-    console.log(array)
-    localStorage.setItem("empresa", JSON.stringify(array))
-    mostrarCatalogo(array)
-
-    inputLegajo.value = ""
-    inputNombre.value = ""
-    inputPuesto.value = ""
-    inputSueldo.value = ""
+    
+    let empleadoAgregado = empresa.find((elem)=> elem.legajo == empleadoNuevo.legajo)
+    if(isNaN(empleadoNuevo.legajo)){
+        Swal.fire({
+            icon: 'error',
+            title: 'Dato incorrecto',
+            text: 'El dato en legajo no es un número! Por favor ingrese un dato correcto.',
+            background:"#0bbaff"
+        })
+    }else if(isNaN(empleadoNuevo.sueldo)){
+        Swal.fire({
+            icon: 'error',
+            title: 'Dato incorrecto',
+            text: 'El dato en sueldo no es un número! Por favor ingrese un dato correcto y sin signos.',
+            background:"#0bbaff"
+        })
+    }else if((empleadoAgregado == undefined)){
+        empleado.push(empleadoNuevo)
+        localStorage.setItem("empresa", JSON.stringify(empleado))
+        mostrarCatalogo(empleado)
+        formEmpleado.reset()
+        Toastify({
+            text: `Usted ha agregado a ${empleadoNuevo.nombre} con el legajo N°${empleadoNuevo.legajo} en su catalogo como nuevo empleado`,
+            gravity: "top",
+            position: "right",
+            style:{
+                background: "linear-gradient(to right, #0bbaff, #ffffff)",
+                color: "black"
+                },duration: 3000
+        })
+    }else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Dato incorrecto',
+            text: 'Este numero de legajo ya existe! Por favor ingrese un dato correcto.',
+            background:"#0bbaff"
+        })
+    }
 }
 
 function buscarInfo(buscado, array) {
@@ -107,13 +99,11 @@ function buscarInfo(buscado, array) {
 //ordenamiento
 function ordenarMenorMayor(array) {
     const menorMayor = [].concat(array)
-    //ordena de menor a mayor
     menorMayor.sort((a, b) => a.legajo - b.legajo)
     mostrarCatalogo(menorMayor)
 }
 
 function ordenarMayorMenor(arr) {
-    //ordenar de mayor a menor
     const mayorMenor = [].concat(arr)
     mayorMenor.sort((param1, param2) => {
         return param2.legajo - param1.legajo
@@ -134,19 +124,33 @@ function ordenarAlfabeticamenteNombre(array) {
     })
     mostrarCatalogo(ordenadoAlfabeticamente)
 }
+//búsqueda
+function buscarInfo(buscado, empleado){
+let busquedaEmpleado = empleado.filter(
+    (empleado) => empleado.legajo.toLowerCase().includes(buscado.toLowerCase()) || empleado.nombre.toLowerCase().includes(buscado.toLowerCase())
+)
+busquedaEmpleado.length == 0 ? 
+    (coincidencia.innerHTML = `<h3>No hay coincidencias con su búsqueda</h3>`, 
+    mostrarCatalogo(busquedaEmpleado)) 
+    : 
+    (coincidencia.innerHTML = "", 
+    mostrarCatalogo(busquedaEmpleado))
+
+}
 
 
 
 //EVENTOS:
-guardarEmpleadoBtn.addEventListener("click", () => {
+setTimeout(()=>{guardarEmpleadoBtn.addEventListener("click", () => {
     cargarEmpleado(empresa)
-})
+}),5000})
 
-verCatalogoBtn.addEventListener("click", () => {mostrarCatalogo(empresa)})
-
-ocultarCatalogoBtn.onclick = function () {
-    empleados.innerHTML = ""
-}
+setTimeout(()=>{
+    //manipulación de DOM para darle pequeño efecto de carga
+    cargandoTexto.innerHTML = ""
+    cargandoRuedita.remove()
+    mostrarCatalogo(empresa)
+}, 2000)
 
 buscador.addEventListener("input", () => {
     buscarInfo(buscador.value, empresa)
@@ -164,3 +168,38 @@ selectOrden.addEventListener("change", () => {
         mostrarCatalogo(empresa)
     }
 })
+
+
+
+
+
+
+// Swal.fire({
+//     title: 'Do you want to save the changes?',
+//     showDenyButton: true,
+//     showCancelButton: true,
+//     confirmButtonText: 'Save',
+//     denyButtonText: `Don't save`,
+//   }).then((result) => {
+//     /* Read more about isConfirmed, isDenied below */
+//     if (result.isConfirmed) {
+//       Swal.fire('Saved!', '', 'success')
+//     } else if (result.isDenied) {
+//       Swal.fire('Changes are not saved', '', 'info')
+//     }
+//   })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

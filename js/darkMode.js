@@ -18,15 +18,13 @@ if (modoOscuro == true) {
     document.body.classList.remove("darkMode")
 }
 
-//eventos DarkMode
+//eventos
 botonDarkMode.addEventListener("click", () => {
-    console.log("Btn oscuro funciona")
     document.body.classList.add("darkMode")
     localStorage.setItem("modoOscuro", true)
 })
 
 botonLightMode.addEventListener("click", () => {
-    console.log("Btn claro funciona")
     document.body.classList.remove("darkMode")
     localStorage.setItem("modoOscuro", false)
 })
