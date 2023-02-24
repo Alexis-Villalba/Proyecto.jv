@@ -28,6 +28,8 @@ function mostrarCatalogo(array) {
                             <p class="">Sueldo: ${empleado.sueldo}</p>
                 </div>
         </div>`
+
+
         empleados.appendChild(nuevoEmpleado)
     }
 }
@@ -35,56 +37,57 @@ function mostrarCatalogo(array) {
 
 
 function cargarEmpleado(empleado) {
-    
+
     let inputLegajo = document.getElementById("legajoInput")
     let inputNombre = document.getElementById("nombreInput")
     let inputPuesto = document.getElementById("puestoInput")
     let inputSueldo = document.getElementById("sueldoInput")
 
     const empleadoNuevo = new Empleado(inputLegajo.value, inputNombre.value, inputPuesto.value, inputSueldo.value, "Empleado.jpg")
-    
-    let empleadoAgregado = empresa.find((elem)=> elem.legajo == empleadoNuevo.legajo)
-    if(isNaN(empleadoNuevo.legajo)){
+
+    let empleadoAgregado = empresa.find((elem) => elem.legajo == empleadoNuevo.legajo)
+    if (isNaN(empleadoNuevo.legajo)) {
         Swal.fire({
             icon: 'error',
             title: 'Dato incorrecto',
             text: 'El dato en legajo no es un número! Por favor ingrese un dato correcto.',
-            background:"#0bbaff"
+            background: "#0bbaff"
         })
-    }else if(isNaN(empleadoNuevo.sueldo)){
+    } else if (isNaN(empleadoNuevo.sueldo)) {
         Swal.fire({
             icon: 'error',
             title: 'Dato incorrecto',
             text: 'El dato en sueldo no es un número! Por favor ingrese un dato correcto y sin signos.',
-            background:"#0bbaff"
+            background: "#0bbaff"
         })
-    }else if((empleadoAgregado == undefined)){
-        empleado.push(empleadoNuevo)
-        localStorage.setItem("empresa", JSON.stringify(empleado))
-        mostrarCatalogo(empleado)
-        formEmpleado.reset()
+    } else if ((empleadoAgregado == undefined)) {
         Toastify({
             text: `Usted ha agregado a ${empleadoNuevo.nombre} con el legajo N°${empleadoNuevo.legajo} en su catalogo como nuevo empleado`,
             gravity: "top",
             position: "right",
-            style:{
+            style: {
                 background: "linear-gradient(to right, #0bbaff, #ffffff)",
                 color: "black"
-                },duration: 3000
-        })
-    }else{
+            },
+            duration: 3000
+        }).showToast();
+        empleado.push(empleadoNuevo)
+        localStorage.setItem("empresa", JSON.stringify(empleado))
+        mostrarCatalogo(empleado)
+        formEmpleado.reset()
+    } else {
         Swal.fire({
             icon: 'error',
             title: 'Dato incorrecto',
             text: 'Este numero de legajo ya existe! Por favor ingrese un dato correcto.',
-            background:"#0bbaff"
+            background: "#0bbaff"
         })
     }
 }
 
 function buscarInfo(buscado, array) {
     let busquedaArray = array.filter(
-        (empleado) => empleado.nombre.toLowerCase().includes(buscado.toLowerCase()) || empleado.legajo.toLowerCase().includes(buscado.toLowerCase())
+        (empleado) => empleado.nombre.toLowerCase().includes(buscado.toLowerCase()) || empleado.legajo === buscado
     )
     if (busquedaArray.length == 0) {
         coincidencia.innerHTML = `<h3>No hay coincidencias con su búsqueda</h3>`
@@ -125,39 +128,26 @@ function ordenarAlfabeticamenteNombre(array) {
     mostrarCatalogo(ordenadoAlfabeticamente)
 }
 //búsqueda
-function buscarInfo(buscado, empleado){
-let busquedaEmpleado = empleado.filter(
-    (empleado) => empleado.legajo.toLowerCase().includes(buscado.toLowerCase()) || empleado.nombre.toLowerCase().includes(buscado.toLowerCase())
-)
-busquedaEmpleado.length == 0 ? 
-    (coincidencia.innerHTML = `<h3>No hay coincidencias con su búsqueda</h3>`, 
-    mostrarCatalogo(busquedaEmpleado)) 
-    : 
-    (coincidencia.innerHTML = "", 
-    mostrarCatalogo(busquedaEmpleado))
-
-}
 
 
 
 //EVENTOS:
-setTimeout(()=>{guardarEmpleadoBtn.addEventListener("click", () => {
+guardarEmpleadoBtn.addEventListener("click", () => {
     cargarEmpleado(empresa)
-}),5000})
+})
 
-setTimeout(()=>{
-    //manipulación de DOM para darle pequeño efecto de carga
+setTimeout(() => {
     cargandoTexto.innerHTML = ""
     cargandoRuedita.remove()
     mostrarCatalogo(empresa)
-}, 2000)
+}, 1000)
 
 buscador.addEventListener("input", () => {
-    buscarInfo(buscador.value, empresa)
+    buscarInfo(buscador.value.toLowerCase(), empresa)
+    // console.log(buscador.value)
 })
 
 selectOrden.addEventListener("change", () => {
-    console.log(selectOrden.value)
     if (selectOrden.value == 1) {
         ordenarMayorMenor(empresa)
     } else if (selectOrden.value == 2) {
@@ -168,38 +158,3 @@ selectOrden.addEventListener("change", () => {
         mostrarCatalogo(empresa)
     }
 })
-
-
-
-
-
-
-// Swal.fire({
-//     title: 'Do you want to save the changes?',
-//     showDenyButton: true,
-//     showCancelButton: true,
-//     confirmButtonText: 'Save',
-//     denyButtonText: `Don't save`,
-//   }).then((result) => {
-//     /* Read more about isConfirmed, isDenied below */
-//     if (result.isConfirmed) {
-//       Swal.fire('Saved!', '', 'success')
-//     } else if (result.isDenied) {
-//       Swal.fire('Changes are not saved', '', 'info')
-//     }
-//   })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,7 +7,6 @@ let modoOscuro
 if (localStorage.getItem("modoOscuro")) {
     modoOscuro = JSON.parse(localStorage.getItem("modoOscuro"))
 } else {
-    console.log("Entra por primera vez")
     localStorage.setItem("modoOscuro", false)
     modoOscuro = JSON.parse(localStorage.getItem("modoOscuro"))
 }
