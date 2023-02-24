@@ -87,7 +87,7 @@ function cargarEmpleado(empleado) {
 
 function buscarInfo(buscado, array) {
     let busquedaArray = array.filter(
-        (empleado) => empleado.nombre.toLowerCase().includes(buscado.toLowerCase()) || empleado.legajo === buscado
+        (empleado) => empleado.nombre.toLowerCase().includes(buscado.toLowerCase()) || empleado.legajo == buscado
     )
     if (busquedaArray.length == 0) {
         coincidencia.innerHTML = `<h3>No hay coincidencias con su búsqueda</h3>`

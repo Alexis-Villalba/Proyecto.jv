@@ -1,13 +1,13 @@
 [
     {
-        "legajo":29395,
+        "legajo":"29395",
         "nombre": "Alexis Villalba",
         "puesto": "Operario calificado",
         "sueldo": 100000,
         "imagen": "Empleado.jpg"
     },
     {
-        "legajo": 32215,
+        "legajo": "32215",
         "nombre": "Juan Gomez",
         "puesto": "Ingresante",
         "sueldo": 93000,
@@ -15,21 +15,21 @@
     },
     {
         
-        "legajo": 20018,
+        "legajo": "20018",
         "nombre": "Carlos Abrate",
         "puesto": "Oficial Múltiple superior",
         "sueldo": 150000,
         "imagen": "Empleado.jpg"
     },
     {
-        "legajo": 25849,
+        "legajo": "25849",
         "nombre": "Ignacio Quinteros",
         "puesto": "Empleado administrativo de 2°",
         "sueldo": 120000,
         "imagen": "Empleado.jpg"
     },
     {
-        "legajo": 21540,
+        "legajo": "21540",
         "nombre": "Ramon Perez",
         "puesto": "Oficial",
         "sueldo": 130000,
