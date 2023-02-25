@@ -8,6 +8,11 @@ let selectOrden = document.getElementById("selectOrden")
 let formEmpleado = document.getElementById("formEmpleado")
 let cargandoTexto = document.getElementById("cargandoTexto")
 let cargandoRuedita = document.getElementById("cargandoRuedita")
+let inputLegajo = document.getElementById("legajoInput")
+let inputNombre = document.getElementById("nombreInput")    
+let inputPuesto = document.getElementById("puestoInput")
+let inputSueldo = document.getElementById("sueldoInput")
+let idModalAgregarEmpleado = document.getElementById("idModalAgregarEmpleado")
 
 
 
@@ -29,7 +34,7 @@ function mostrarCatalogo(array) {
                             <button class= "btn btn-danger" id="botonEliminar${empleado.legajo}"><i >Eliminar empleado</i></button>
                 </div>
         </div>`
-    empleados.appendChild(nuevoEmpleado)
+        empleados.appendChild(nuevoEmpleado)
 
         document.getElementById(`botonEliminar${empleado.legajo}`).addEventListener("click", () => {
 
@@ -43,25 +48,17 @@ function mostrarCatalogo(array) {
             array.splice(posicion, 1)
 
             localStorage.setItem("empresa", JSON.stringify(array))
-
         })
     }
-
-    
 }
 
+//formulario de guardar empleado
 
-
-function cargarEmpleado(empleado) {
-
-    let inputLegajo = document.getElementById("legajoInput")
-    let inputNombre = document.getElementById("nombreInput")
-    let inputPuesto = document.getElementById("puestoInput")
-    let inputSueldo = document.getElementById("sueldoInput")
-
+function cargarEmpleado(empresa) {
     const empleadoNuevo = new Empleado(inputLegajo.value, inputNombre.value, inputPuesto.value, inputSueldo.value, "Empleado.jpg")
 
     let empleadoAgregado = empresa.find((elem) => elem.legajo == empleadoNuevo.legajo)
+
     if (isNaN(empleadoNuevo.legajo)) {
         Swal.fire({
             icon: 'error',
@@ -87,10 +84,12 @@ function cargarEmpleado(empleado) {
             },
             duration: 3000
         }).showToast();
-        empleado.push(empleadoNuevo)
-        localStorage.setItem("empresa", JSON.stringify(empleado))
-        mostrarCatalogo(empleado)
+        empresa.push(empleadoNuevo)
+        localStorage.setItem("empresa", JSON.stringify(empresa))
+        mostrarCatalogo(empresa)
         formEmpleado.reset()
+        var modalInstance = bootstrap.Modal.getInstance(idModalAgregarEmpleado)
+        modalInstance.hide()
     } else {
         Swal.fire({
             icon: 'error',
@@ -98,6 +97,16 @@ function cargarEmpleado(empleado) {
             text: 'Este numero de legajo ya existe! Por favor ingrese un dato correcto.',
             background: "#0bbaff"
         })
+    }
+}
+function validarFormulario(event) {
+    const mensajeError = document.getElementById("mensaje-error");
+
+    if (inputLegajo.value.trim() === "" || inputNombre.value.trim() === "" || inputPuesto.value.trim() === "" || inputSueldo.value.trim() === "") {
+        mensajeError.style.display = "block";
+    } else {
+        mensajeError.style.display = "none";
+        cargarEmpleado(empresa)
     }
 }
 
@@ -151,7 +160,7 @@ function ordenarAlfabeticamenteNombre(array) {
 
 //EVENTOS:
 guardarEmpleadoBtn.addEventListener("click", () => {
-    cargarEmpleado(empresa)
+    validarFormulario()
 })
 
 setTimeout(() => {
@@ -162,7 +171,6 @@ setTimeout(() => {
 
 buscador.addEventListener("input", () => {
     buscarInfo(buscador.value.toLowerCase(), empresa)
-    // console.log(buscador.value)
 })
 
 selectOrden.addEventListener("change", () => {

@@ -106,34 +106,55 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <form id="formEmpleado">
+                    <form id="formEmpleado" >
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombreInput" aria-describedby="nombre">
+                            <label for="nombreInput" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreInput" aria-describedby="nombre" required>
 
                         </div>
                         <div class="mb-3">
-                            <label for="legajo" class="form-label">Legajo</label>
-                            <input type="text" class="form-control" id="legajoInput" aria-describedby="legajo">
+                            <label for="legajoInput" class="form-label">Legajo</label>
+                            <input type="text" class="form-control" id="legajoInput" aria-describedby="legajo" required>
 
                         </div>
                         <div class="mb-3">
-                            <label for="puesto" class="form-label">Puesto</label>
-                            <input type="text" class="form-control" id="puestoInput" aria-describedby="puesto">
+                            <label for="puestoInput" class="form-label">Puesto</label>
+                            <input type="text" class="form-control" id="puestoInput" aria-describedby="puesto" required>
 
                         </div>
                         <div class="mb-3">
-                            <label for="sueldo" class="form-label">Sueldo:</label>
-                            <input type="text" class="form-control" id="sueldoInput" aria-describedby="sueldo">
+                            <label for="sueldoInput" class="form-label">Sueldo:</label>
+                            <input type="text" class="form-control" id="sueldoInput" aria-describedby="sueldo" required>
 
                         </div>
                     </form>
-                </div>
+                    <!-- <form class=" g-3" id="formEmpleado" >
+                        <div class="col-md-3">
+                          <label for="nombreInput" class="form-label">Nombre</label>
+                          <input type="text" class="form-control" id="nombreInput" value="Mark" aria-describedby="nombre" required>
+                        </div>
+                        <div class="col-md-3">
+                          <label for="legajoInput" class="form-label">Legajo</label>
+                          <input type="text" class="form-control" id="legajoInput" aria-describedby="legajo" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="puestoInput" class="form-label">Puesto</label>
+                            <input type="text" class="form-control" id="puestoInput" aria-describedby="puesto" required>
+                          </div>
+                          <div class="col-md-3">
+                            <label for="sueldoInput" class="form-label">Sueldo</label>
+                            <input type="text" class="form-control" id="sueldoInput" aria-describedby="sueldo" required>
+                          </div>
+                       -->
+                
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="text" id="guardarEmpleadoBtn" class="btn-80" data-bs-dismiss="modal">Guardar
+                    <button type="text" id="guardarEmpleadoBtn" class="btn-80">Guardar
                         Empleado</button>
+                        <p id="mensaje-error" style="display:none; color:red;">Por favor completa el campo obligatorio.</p>
+                    
+                </div>
                 </div>
             </div>
         </div>
