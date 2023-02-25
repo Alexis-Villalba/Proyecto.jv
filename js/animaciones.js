@@ -26,12 +26,28 @@ function mostrarCatalogo(array) {
                             <p>Puesto: ${empleado.puesto}</p>
                             <p>Legajo: ${empleado.legajo}</p>
                             <p class="">Sueldo: ${empleado.sueldo}</p>
+                            <button class= "btn btn-danger" id="botonEliminar${empleado.legajo}"><i >Eliminar empleado</i></button>
                 </div>
         </div>`
+    empleados.appendChild(nuevoEmpleado)
 
+        document.getElementById(`botonEliminar${empleado.legajo}`).addEventListener("click", () => {
 
-        empleados.appendChild(nuevoEmpleado)
+            let cardProducto = document.getElementById(empleado.legajo)
+            cardProducto.remove()
+
+            let productoEliminar = array.find((emp) => emp.legajo == empleado.legajo)
+
+            let posicion = array.indexOf(productoEliminar)
+
+            array.splice(posicion, 1)
+
+            localStorage.setItem("empresa", JSON.stringify(array))
+
+        })
     }
+
+    
 }
 
 
@@ -86,8 +102,10 @@ function cargarEmpleado(empleado) {
 }
 
 function buscarInfo(buscado, array) {
+    console.log(buscado)
+
     let busquedaArray = array.filter(
-        (empleado) => empleado.nombre.toLowerCase().includes(buscado.toLowerCase()) || empleado.legajo == buscado
+        (empleado) => empleado.nombre.toLowerCase().includes(buscado.toLowerCase()) || empleado.legajo.toString().includes(buscado)
     )
     if (busquedaArray.length == 0) {
         coincidencia.innerHTML = `<h3>No hay coincidencias con su búsqueda</h3>`
